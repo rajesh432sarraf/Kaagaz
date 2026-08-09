@@ -101,7 +101,7 @@ Kaagaz/
 
 ## 🌐 Production Deployment
 
-The backend server is live on Render at:
+The frontend server is live on Render at:
 `https://kaagaz-backend.onrender.com`
 
 ### Frontend Production Environment Configuration
