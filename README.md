@@ -101,8 +101,8 @@ Kaagaz/
 
 ## 🌐 Production Deployment
 
-The frontend server is live on Render at:
-`https://kaagaz-backend.onrender.com`
+- **Backend API Server is live at:** `https://kaagaz-backend.onrender.com`
+- **Frontend Web Application is live at:** `https://kaagaz-frontend.onrender.com`
 
 ### Frontend Production Environment Configuration
 For hosting the frontend (e.g. on Render or custom static host), configure `frontend/.env` with the production backend endpoint:
