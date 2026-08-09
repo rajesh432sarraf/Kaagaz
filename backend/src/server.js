@@ -12,7 +12,23 @@ const app = express();
 connectDB();
 
 // Middlewares
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'https://kaagaz-frontend.onrender.com'
+    ];
+    if (process.env.CLIENT_ORIGIN) {
+      allowedOrigins.push(process.env.CLIENT_ORIGIN);
+    }
+    if (allowedOrigins.includes(origin) || origin.startsWith('http://localhost:')) {
+      return callback(null, true);
+    }
+    return callback(null, false); // Don't throw error to avoid crashing, just deny CORS
+  },
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
