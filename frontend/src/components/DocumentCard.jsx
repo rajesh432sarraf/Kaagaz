@@ -3,6 +3,7 @@ import {
   Plane, Car, Eye, Trash2, HeartPulse, Home, Download
 } from 'lucide-react'
 import StatusBadge from './StatusBadge'
+import { API_ORIGIN } from '../services/api'
 
 const getCategoryIcon = (cat) => {
   switch (cat?.toLowerCase()) {
@@ -83,7 +84,7 @@ export default function DocumentCard({ doc, onView, onDelete }) {
         </button>
         {fileUrl && (
           <a
-            href={`http://localhost:5000${fileUrl}`}
+            href={`${API_ORIGIN}${fileUrl}`}
             target="_blank"
             rel="noopener noreferrer"
             className="p-2 text-[--text-muted] hover:text-indigo-400 hover:bg-indigo-500/10 rounded-xl transition-all duration-150 border border-transparent hover:border-indigo-500/15"
