@@ -101,7 +101,6 @@ Kaagaz/
 
 ## 🌐 Production Deployment
 
-- **Backend API Server is live at:** `https://kaagaz-backend.onrender.com`
 - **Frontend Web Application is live at:** `https://kaagaz-frontend.onrender.com`
 
 ### Frontend Production Environment Configuration
@@ -124,3 +123,4 @@ This will compile all React assets into a highly optimized, minified `dist/` dir
 - **Created by:** Rajesh Sarraf
 - **Email:** [sarrafrajesh432@gmail.com](mailto:sarrafrajesh432@gmail.com)
 - **GitHub:** [rajesh432sarraf](https://github.com/rajesh432sarraf)
+
