@@ -1,90 +1,80 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { 
   FileText, 
   AlertTriangle, 
   XCircle, 
-  Tag, 
   Plus, 
-  Bell, 
-  Eye, 
-  ArrowRight,
   Sparkles,
   Calendar,
-  Layers,
-  ChevronRight,
-  ShieldCheck,
-  ShieldX
+  Layers
 } from 'lucide-react'
 
 // Components
 import StatCard from '../components/StatCard'
-import DocumentCard from '../components/DocumentCard'
 import StatusBadge from '../components/StatusBadge'
 import QuickAction from '../components/QuickAction'
 import SectionHeader from '../components/SectionHeader'
+import { useAuth } from '../context/AuthContext'
+import { getDocumentStats, getDocuments } from '../services/api'
 
-// Mock Data
-import { mockDocuments, mockCategories } from '../data/mockData'
+// Mock Data (for document cards fallback)
+import { mockCategories } from '../data/mockData'
 
 export default function Dashboard() {
-  
+  const { user } = useAuth();
+  const [stats, setStats] = useState(null);
+  const [recentDocs, setRecentDocs] = useState([]);
+  const [attentionDocs, setAttentionDocs] = useState([]);
+
+  useEffect(() => {
+    // Fetch real stats
+    getDocumentStats()
+      .then(res => setStats(res.data))
+      .catch(() => {}); // ignore errors — show dashes
+
+    // Fetch recent docs
+    getDocuments()
+      .then(res => {
+        const docs = res.data || [];
+        setRecentDocs(docs.slice(0, 5));
+        // Attention docs = expiring/expired ones
+        setAttentionDocs(
+          docs
+            .filter(d => ['Expired', 'Critical', 'Expiring Soon'].includes(d.status))
+            .slice(0, 3)
+        );
+      })
+      .catch(() => {});
+  }, []);
+
   const handleView = (doc) => {
-    alert(`Mock viewing: ${doc.name}`);
+    alert(`Viewing: ${doc.name}`);
   };
 
-  // Expiry alerts for the "Needs Your Attention" panel
-  // Expiry documents matching description
-  const attentionDocs = [
-    { 
-      id: 'doc-4', 
-      name: 'Car Insurance', 
-      category: 'Insurance', 
-      expiryText: 'Expires in 23 days', 
-      status: 'Expiring Soon' 
-    },
-    { 
-      id: 'doc-5', 
-      name: 'Driving Licence', 
-      category: 'Vehicle', 
-      expiryText: 'Expires in 84 days', 
-      status: 'Expiring Soon' 
-    },
-    { 
-      id: 'doc-2', 
-      name: 'Passport', 
-      category: 'Travel', 
-      expiryText: 'Expires in 4 years', 
-      status: 'Valid' 
-    }
-  ];
-
-  // Recent Documents (from requirements)
-  const recentDocNames = ['Aadhaar Card', 'Passport', 'PAN Card', 'Car Insurance', 'Driving Licence'];
-  const recentDocs = mockDocuments.filter(d => recentDocNames.includes(d.name)).slice(0, 5);
+  // Get greeting based on time
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const firstName = user?.name?.split(' ')[0] || 'there';
 
   return (
-    <div className="space-y-8 animate-fade-in text-slate-800">
+    <div className="space-y-8 animate-fade-in">
       
       {/* 1. Page Header */}
-      <div className="flex items-center justify-between pb-6 border-b border-slate-100">
+      <div className="flex items-center justify-between pb-6 border-b border-[--border]">
         <div>
-          <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
-            Good morning, Rajesh <span className="animate-wiggle">👋</span>
+          <h1 className="text-2xl md:text-3xl font-extrabold text-[#073b40] tracking-tight">
+            {greeting}, {firstName} <span className="animate-wiggle inline-block">👋</span>
           </h1>
-          <p className="text-sm text-slate-500 font-medium mt-1">
+          <p className="text-sm text-[#176971] font-medium mt-1">
             Here's an overview of your important documents.
           </p>
         </div>
 
-        {/* Notifications and Profile Avatar */}
-        <div className="flex items-center space-x-4">
-          <button className="relative p-2 text-slate-500 hover:text-blue-600 hover:bg-slate-50 border border-slate-100 rounded-xl transition-all">
-            <Bell className="h-5 w-5" />
-            <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
-          </button>
-          
-          <div className="h-10 w-10 bg-blue-100 border border-blue-200/50 rounded-xl flex items-center justify-center font-bold text-blue-700 shadow-sm cursor-pointer hover:shadow transition-all">
-            R
+        {/* Avatar */}
+        <div className="flex items-center space-x-3">
+          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-500/20 flex items-center justify-center text-sm font-bold text-indigo-300">
+            {user?.name?.[0]?.toUpperCase() || 'U'}
           </div>
         </div>
       </div>
@@ -93,31 +83,31 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard 
           title="Total Documents" 
-          value="12" 
+          value={stats ? stats.totalDocuments : '—'} 
           icon={FileText} 
           variant="primary" 
-          caption="12 files in digital storage"
+          caption={stats ? `${stats.totalDocuments} files in digital storage` : 'Loading...'}
         />
         <StatCard 
           title="Expiring Soon" 
-          value="2" 
+          value={stats ? (stats.expiringSoon || 0) + (stats.critical || 0) : '—'} 
           icon={AlertTriangle} 
           variant="warning" 
-          caption="2 documents need your attention"
+          caption="Documents expiring within 90 days"
         />
         <StatCard 
           title="Expired" 
-          value="1" 
+          value={stats ? (stats.expired || 0) : '—'} 
           icon={XCircle} 
           variant="danger" 
-          caption="1 document requires renewal"
+          caption="Documents requiring renewal"
         />
         <StatCard 
           title="Categories" 
-          value="6" 
+          value={stats ? Object.keys(stats.categories || {}).length : '—'} 
           icon={Layers} 
           variant="neutral" 
-          caption="6 folders structured"
+          caption="Document categories"
         />
       </div>
 
@@ -160,7 +150,7 @@ export default function Dashboard() {
                   <tbody className="divide-y divide-slate-50">
                     {recentDocs.map((doc) => (
                       <tr 
-                        key={doc.id} 
+                        key={doc._id} 
                         className="hover:bg-slate-50/30 transition-colors group"
                       >
                         <td className="px-5 py-3.5 font-bold text-slate-800">
@@ -250,7 +240,11 @@ export default function Dashboard() {
                   <div className="flex items-center justify-between border-t border-slate-100/50 pt-2.5 mt-1 text-xs">
                     <span className="font-bold text-slate-500 flex items-center gap-1.5">
                       <Calendar className="h-4.5 w-4.5 text-slate-400" />
-                      {doc.expiryText}
+                      {doc.expiryDate
+                        ? new Date(doc.expiryDate).toLocaleDateString('en-IN', {
+                            day: 'numeric', month: 'short', year: 'numeric',
+                          })
+                        : 'No expiry date'}
                     </span>
                     
                     <button

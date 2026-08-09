@@ -1,85 +1,119 @@
 import { NavLink, useNavigate } from 'react-router-dom'
 import { 
-  LayoutDashboard, 
-  FileText, 
-  Upload, 
-  Sparkles, 
-  Bell, 
-  Settings, 
-  LogOut, 
-  User 
+  LayoutDashboard, FileText, Upload, Sparkles,
+  Bell, Settings, LogOut, ChevronRight
 } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
+
+const menuItems = [
+  { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+  { name: 'Documents', path: '/documents', icon: FileText },
+  { name: 'Upload', path: '/upload', icon: Upload },
+  { name: 'Life Tasks', path: '/tasks', icon: Sparkles },
+  { name: 'Reminders', path: '/reminders', icon: Bell },
+]
 
 export default function Sidebar({ onClose }) {
   const navigate = useNavigate();
-
-  const menuItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Documents', path: '/documents', icon: FileText },
-    { name: 'Upload Document', path: '/upload', icon: Upload },
-    { name: 'Life Tasks', path: '/tasks', icon: Sparkles },
-    { name: 'Reminders', path: '/reminders', icon: Bell },
-    { name: 'Settings', path: '/settings', icon: Settings },
-  ];
+  const { user, logout } = useAuth();
 
   const handleLogout = () => {
-    // Clear mock session (if any) and redirect
+    logout();
     if (onClose) onClose();
-    navigate('/login');
+    navigate('/');
   };
 
+  const initial = user?.name?.[0]?.toUpperCase() || 'U';
+
   return (
-    <div className="h-full flex flex-col justify-between bg-white border-r border-slate-100 w-64 p-5">
-      {/* Brand Logo & Name */}
-      <div className="space-y-6">
-        <div className="flex items-center space-x-3 px-2">
-          <div className="p-2 bg-blue-600 rounded-xl text-white">
-            <FileText className="h-6 w-6" />
+    <div className="h-full flex flex-col w-64 bg-[--bg-surface] border-r border-[--border]">
+      
+      {/* Brand */}
+      <div className="px-5 pt-6 pb-5 border-b border-[--border]">
+        <div className="flex items-center space-x-3">
+          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-glow-sm flex-shrink-0">
+            <FileText className="h-4.5 w-4.5 text-white" />
           </div>
           <div>
-            <h2 className="text-xl font-extrabold text-slate-800 tracking-tight">Kaagaz</h2>
-            <span className="text-[10px] uppercase font-bold tracking-wider text-blue-600">Life Admin</span>
+            <h2 className="text-base font-extrabold text-white tracking-tight">Kaagaz</h2>
+            <span className="text-[10px] font-semibold text-indigo-400 uppercase tracking-widest">Life Admin</span>
           </div>
         </div>
-
-        {/* Menu Links */}
-        <nav className="space-y-1.5">
-          {menuItems.map((item) => (
-            <NavLink
-              key={item.name}
-              to={item.path}
-              onClick={onClose}
-              className={({ isActive }) => 
-                `flex items-center space-x-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
-                  isActive 
-                    ? 'bg-blue-50 text-blue-600 shadow-sm shadow-blue-500/5' 
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                }`
-              }
-            >
-              <item.icon className="h-5 w-5 flex-shrink-0" />
-              <span>{item.name}</span>
-            </NavLink>
-          ))}
-        </nav>
       </div>
 
-      {/* User Profile / Footer Section */}
-      <div className="pt-4 border-t border-slate-100 space-y-3">
-        <div className="flex items-center space-x-3 px-2">
-          <div className="h-10 w-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-600 border border-slate-200/50">
-            <User className="h-5 w-5" />
+      {/* Navigation */}
+      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto scrollbar-none">
+        <p className="px-3 text-[10px] font-bold text-[--text-muted] uppercase tracking-widest mb-3">Main Menu</p>
+        {menuItems.map((item) => (
+          <NavLink
+            key={item.name}
+            to={item.path}
+            onClick={onClose}
+            className={({ isActive }) =>
+              `group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                isActive
+                  ? 'bg-indigo-500/15 text-white border border-indigo-500/20 shadow-glow-sm'
+                  : 'text-[--text-secondary] hover:text-white hover:bg-white/5'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <div className="flex items-center space-x-3">
+                  <item.icon className={`h-4.5 w-4.5 flex-shrink-0 transition-colors ${isActive ? 'text-indigo-400' : 'text-[--text-muted] group-hover:text-[--text-secondary]'}`} />
+                  <span>{item.name}</span>
+                </div>
+                {isActive && <ChevronRight className="h-3.5 w-3.5 text-indigo-400/60" />}
+              </>
+            )}
+          </NavLink>
+        ))}
+
+        <div className="pt-4 mt-2 border-t border-[--border]">
+          <p className="px-3 text-[10px] font-bold text-[--text-muted] uppercase tracking-widest mb-3">Account</p>
+          <NavLink
+            to="/settings"
+            onClick={onClose}
+            className={({ isActive }) =>
+              `group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                isActive
+                  ? 'bg-indigo-500/15 text-white border border-indigo-500/20'
+                  : 'text-[--text-secondary] hover:text-white hover:bg-white/5'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <div className="flex items-center space-x-3">
+                  <Settings className={`h-4.5 w-4.5 flex-shrink-0 ${isActive ? 'text-indigo-400' : 'text-[--text-muted] group-hover:text-[--text-secondary]'}`} />
+                  <span>Settings</span>
+                </div>
+                {isActive && <ChevronRight className="h-3.5 w-3.5 text-indigo-400/60" />}
+              </>
+            )}
+          </NavLink>
+        </div>
+      </nav>
+
+      {/* User Profile & Logout */}
+      <div className="p-3 border-t border-[--border]">
+        {/* User tile */}
+        <div className="flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-[--bg-elevated] border border-[--border] mb-1">
+          <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-500/20 flex items-center justify-center text-xs font-bold text-indigo-300 flex-shrink-0">
+            {initial}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-slate-800 truncate">Rohan Sharma</p>
-            <p className="text-xs text-slate-500 truncate">rohan@example.com</p>
+            <p className="text-xs font-semibold text-white truncate">{user?.name || 'User'}</p>
+            <p className="text-[10px] text-[--text-muted] truncate">{user?.email || ''}</p>
           </div>
         </div>
+
+        {/* Logout */}
         <button
           onClick={handleLogout}
-          className="w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-200"
+          className="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium text-[--text-secondary] hover:text-rose-400 hover:bg-rose-500/8 transition-all duration-200 group"
         >
-          <LogOut className="h-5 w-5 flex-shrink-0" />
+          <LogOut className="h-4 w-4 flex-shrink-0 group-hover:text-rose-400 transition-colors" />
           <span>Log out</span>
         </button>
       </div>

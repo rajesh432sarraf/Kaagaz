@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Sparkles, CheckCircle2, XCircle, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { CheckCircle2, XCircle, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 
 const initialTasks = [
@@ -47,7 +47,7 @@ const initialTasks = [
 ];
 
 export default function LifeTasks() {
-  const [tasks, setTasks] = useState(initialTasks);
+  const tasks = initialTasks;
   const [expandedTaskId, setExpandedTaskId] = useState('1'); // Expand first task by default
 
   const toggleExpand = (id) => {

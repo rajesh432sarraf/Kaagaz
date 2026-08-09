@@ -1,14 +1,16 @@
 import { useState } from 'react'
-import { User, Bell, Shield, Eye, Settings as Gear, CheckCircle2 } from 'lucide-react'
+import { User, Bell, Shield, CheckCircle2 } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
+import { useAuth } from '../context/AuthContext'
 
 export default function Settings() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
   const [success, setSuccess] = useState(false);
 
-  // Form values (mock states)
-  const [name, setName] = useState('Rohan Sharma');
-  const [email, setEmail] = useState('rohan@example.com');
+  // Form values pre-filled from real user
+  const [name, setName] = useState(user?.name || '');
+  const [email, setEmail] = useState(user?.email || '');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   

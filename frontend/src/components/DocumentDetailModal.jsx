@@ -1,8 +1,9 @@
 import { X, Download } from 'lucide-react'
 import StatusBadge from './StatusBadge'
+import { API_ORIGIN } from '../services/api'
 
-export default function DocumentDetailModal({ doc, onClose }) {
-  const { name, category, status, issueDate, expiryDate, addedDate } = doc
+export default function DocumentDetailModal({ doc, onClose, onDelete }) {
+  const { name, category, status, issueDate, expiryDate, createdAt, description, fileUrl } = doc
 
   const formatDate = (dateStr) => {
     if (!dateStr) return 'N/A'
@@ -41,17 +42,31 @@ export default function DocumentDetailModal({ doc, onClose }) {
           </div>
           <div className="col-span-2">
             <p className="font-medium">Uploaded</p>
-            <p>{addedDate ? formatDate(addedDate) : 'Unknown'}</p>
+            <p>{createdAt ? formatDate(createdAt) : 'Unknown'}</p>
           </div>
+          {description && (
+            <div className="col-span-2">
+              <p className="font-medium">Notes</p>
+              <p>{description}</p>
+            </div>
+          )}
         </div>
         <div className="mt-4 space-x-3">
-          <button className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors">
+          {fileUrl ? (
+            <a
+              href={`${API_ORIGIN}${fileUrl}`}
+              download
+              className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+            >
             <Download className="h-4 w-4" />
             <span>Download</span>
-          </button>
-          <button className="inline-flex items-center gap-1.5 px-4 py-2 bg-rose-600 text-white rounded-md hover:bg-rose-700 transition-colors">
+            </a>
+          ) : null}
+          {onDelete ? (
+            <button onClick={onDelete} className="inline-flex items-center gap-1.5 px-4 py-2 bg-rose-600 text-white rounded-md hover:bg-rose-700 transition-colors">
             <span>Delete</span>
-          </button>
+            </button>
+          ) : null}
         </div>
       </div>
     </div>

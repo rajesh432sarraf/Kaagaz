@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const protect = require('../middleware/authMiddleware');
+const upload = require('../middleware/upload');
 const {
   createDocument,
   getAllDocuments,
@@ -10,16 +12,19 @@ const {
   getStats,
 } = require('../controllers/documentController');
 
-// Create a document
-router.post('/', createDocument);
+// All document routes are protected
+router.use(protect);
 
-// Get all documents
+// Create a document (with optional file upload)
+router.post('/', upload.single('file'), createDocument);
+
+// Get all documents for user
 router.get('/', getAllDocuments);
 
-// Get expiring documents
+// Get expiring documents for user
 router.get('/expiring', getExpiringDocuments);
 
-// Get statistics
+// Get statistics for user
 router.get('/stats', getStats);
 
 // Get a single document by ID

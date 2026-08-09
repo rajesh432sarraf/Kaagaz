@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 
 const app = express();
@@ -11,7 +12,7 @@ const app = express();
 connectDB();
 
 // Middlewares
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || 'http://localhost:5173' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -27,11 +28,20 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Document API routes
+// Auth API routes
+app.use('/api/auth', authRoutes);
+
+// Document API routes (all protected via router-level middleware)
 app.use('/api/documents', documentRoutes);
 
-// Global Error Handler
+// Handle multer errors
 app.use((err, req, res, next) => {
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(400).json({ success: false, message: 'File size must be less than 10 MB.' });
+  }
+  if (err.message && err.message.includes('Only PDF')) {
+    return res.status(400).json({ success: false, message: err.message });
+  }
   console.error(err.stack);
   res.status(err.status || 500).json({
     success: false,

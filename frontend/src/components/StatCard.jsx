@@ -1,42 +1,42 @@
 export default function StatCard({ title, value, icon: Icon, variant = 'primary', caption }) {
-  const variantStyles = {
+  const variants = {
     primary: {
-      bg: 'bg-blue-50/60',
-      text: 'text-blue-600',
-      border: 'border-blue-100/50'
+      iconBg: 'bg-indigo-500/10 border-indigo-500/20',
+      iconColor: 'text-indigo-400',
+      valueBg: 'from-indigo-400 to-indigo-300',
     },
     warning: {
-      bg: 'bg-amber-50/60',
-      text: 'text-amber-600',
-      border: 'border-amber-100/50'
+      iconBg: 'bg-amber-500/10 border-amber-500/20',
+      iconColor: 'text-amber-400',
+      valueBg: 'from-amber-400 to-amber-300',
     },
     danger: {
-      bg: 'bg-rose-50/60',
-      text: 'text-rose-600',
-      border: 'border-rose-100/50'
+      iconBg: 'bg-rose-500/10 border-rose-500/20',
+      iconColor: 'text-rose-400',
+      valueBg: 'from-rose-400 to-rose-300',
     },
     neutral: {
-      bg: 'bg-slate-50/60',
-      text: 'text-slate-600',
-      border: 'border-slate-150'
-    }
+      iconBg: 'bg-white/5 border-white/10',
+      iconColor: 'text-[--text-secondary]',
+      valueBg: 'from-white to-white/80',
+    },
   };
 
-  const style = variantStyles[variant] || variantStyles.primary;
+  const style = variants[variant] || variants.primary;
 
   return (
-    <div className="bg-white border border-slate-100 rounded-2xl p-5 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between space-y-3">
-      <div className="flex items-center justify-between">
-        <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400">{title}</span>
-        <div className={`p-2 rounded-xl ${style.bg} ${style.text} flex items-center justify-center`}>
-          {Icon && <Icon className="h-5 w-5" />}
+    <div className="glass rounded-2xl p-5 hover:border-indigo-500/15 transition-all duration-200 hover:shadow-card group">
+      <div className="flex items-start justify-between mb-4">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-[--text-muted]">{title}</span>
+        <div className={`p-2 rounded-xl border ${style.iconBg}`}>
+          {Icon && <Icon className={`h-4 w-4 ${style.iconColor}`} />}
         </div>
       </div>
-      <div className="space-y-1">
-        <h3 className="text-3xl font-extrabold text-slate-800 tracking-tight">{value}</h3>
-        {caption && (
-          <p className="text-xs font-semibold text-slate-500">{caption}</p>
-        )}
+      <div>
+        <h3 className={`text-3xl font-extrabold tracking-tight bg-gradient-to-br ${style.valueBg} bg-clip-text text-transparent`}>
+          {value}
+        </h3>
+        {caption && <p className="text-xs text-[--text-muted] mt-1.5 font-medium">{caption}</p>}
       </div>
     </div>
   )
