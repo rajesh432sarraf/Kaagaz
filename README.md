@@ -124,5 +124,3 @@ This will compile all React assets into a highly optimized, minified `dist/` dir
 - **Created by:** Rajesh Sarraf
 - **Email:** [sarrafrajesh432@gmail.com](mailto:sarrafrajesh432@gmail.com)
 - **GitHub:** [rajesh432sarraf](https://github.com/rajesh432sarraf)
-- **LinkedIn:** [rajesh432sarraf](https://linkedin.com/in/rajesh432sarraf)
-- **Twitter/X:** [@rajesh432sarraf](https://x.com/rajesh432sarraf)
