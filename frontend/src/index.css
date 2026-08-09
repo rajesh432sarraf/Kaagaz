@@ -102,12 +102,11 @@
     border-radius: inherit;
   }
 
-  /* Paper texture with a neutral charcoal overlay for legible content. */
   .document-bg {
     background-color: #050505;
     background-image:
       linear-gradient(180deg, rgba(255, 248, 237, 0.24) 0%, rgba(249, 239, 222, 0.38) 100%),
-      url('./assets/document-paper-background.png');
+      url('./assets/document-paper-background.png') !important;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -215,14 +214,11 @@
     background-color: #050505;
     background-image:
       linear-gradient(180deg, rgba(255, 248, 237, 0.24) 0%, rgba(249, 239, 222, 0.38) 100%),
-      url('./assets/document-paper-background.png');
-  }
-
-  @media (max-width: 767px) {
-    .amoled-ui.document-bg {
-      background-attachment: scroll;
-      background-position: center center;
-    }
+      url('./assets/document-paper-background.png') !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
   }
 
   .amoled-ui .glass {
@@ -318,5 +314,26 @@
   .amoled-ui input::placeholder,
   .amoled-ui textarea::placeholder {
     color: #a1886f;
+  }
+
+  /* Contrast and legibility fixes for amoled-ui warm ivory theme */
+  .amoled-ui h1, 
+  .amoled-ui h2, 
+  .amoled-ui h3, 
+  .amoled-ui h4, 
+  .amoled-ui h5, 
+  .amoled-ui h6,
+  .amoled-ui th,
+  .amoled-ui td,
+  .amoled-ui .text-white:not(button):not(a):not(.bg-indigo-600 *):not(.bg-indigo-500 *):not(.bg-indigo-700 *):not(.bg-gradient-to-br *) {
+    color: var(--text-primary) !important;
+  }
+
+  /* Handle gradient text clip legibility on warm background */
+  .amoled-ui .bg-clip-text {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: var(--text-primary) !important;
+    color: var(--text-primary) !important;
   }
 }

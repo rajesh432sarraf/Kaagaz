@@ -18,7 +18,7 @@ export default function StatCard({ title, value, icon: Icon, variant = 'primary'
     neutral: {
       iconBg: 'bg-white/5 border-white/10',
       iconColor: 'text-[--text-secondary]',
-      valueBg: 'from-white to-white/80',
+      valueBg: 'from-[--text-primary] to-[--text-secondary]',
     },
   };
 

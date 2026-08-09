@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CheckCircle2, XCircle, AlertCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { CheckCircle2, XCircle, AlertCircle, ChevronDown, ChevronUp, Sparkles } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 
 const initialTasks = [
@@ -63,11 +63,11 @@ export default function LifeTasks() {
   const getDocStatusIcon = (status) => {
     switch (status) {
       case 'Available':
-        return <CheckCircle2 className="h-4 w-4 text-emerald-600 flex-shrink-0" />;
+        return <CheckCircle2 className="h-4 w-4 text-emerald-400 flex-shrink-0" />;
       case 'Missing':
-        return <XCircle className="h-4 w-4 text-rose-500 flex-shrink-0" />;
+        return <XCircle className="h-4 w-4 text-rose-400 flex-shrink-0" />;
       case 'Needs Verification':
-        return <AlertCircle className="h-4 w-4 text-amber-500 flex-shrink-0 animate-pulse" />;
+        return <AlertCircle className="h-4 w-4 text-amber-400 flex-shrink-0 animate-pulse" />;
       default:
         return null;
     }
@@ -76,13 +76,13 @@ export default function LifeTasks() {
   const getStatusBadgeClass = (status) => {
     switch (status) {
       case 'Available':
-        return 'text-emerald-700 bg-emerald-50 border-emerald-100';
+        return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
       case 'Missing':
-        return 'text-rose-700 bg-rose-50 border-rose-100';
+        return 'text-rose-400 bg-rose-500/10 border-rose-500/20';
       case 'Needs Verification':
-        return 'text-amber-700 bg-amber-50 border-amber-100';
+        return 'text-amber-400 bg-amber-500/10 border-amber-500/20';
       default:
-        return 'text-slate-500 bg-slate-50 border-slate-100';
+        return 'text-[--text-secondary] bg-white/5 border-[--border]';
     }
   };
 
@@ -101,50 +101,50 @@ export default function LifeTasks() {
           return (
             <div 
               key={task.id}
-              className="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden transition-all duration-200 hover:shadow-md hover:border-slate-200/60"
+              className="glass rounded-3xl overflow-hidden transition-all duration-300 hover:border-indigo-500/20 shadow-card"
             >
               {/* Task Summary Card Header */}
               <div 
                 onClick={() => toggleExpand(task.id)}
-                className="p-5 flex items-center justify-between cursor-pointer select-none"
+                className="p-5 flex items-center justify-between cursor-pointer select-none relative z-10"
               >
                 <div className="space-y-1.5 flex-1 pr-4">
                   <div className="flex items-center space-x-2.5">
-                    <h3 className="font-bold text-slate-800 text-base md:text-lg">{task.name}</h3>
+                    <h3 className="font-bold text-white text-base md:text-lg">{task.name}</h3>
                     {progress === 100 && (
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-100">
-                        Ready to go!
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-glow-sm">
+                        Ready
                       </span>
                     )}
                   </div>
-                  <p className="text-xs text-slate-400 font-medium line-clamp-1">{task.description}</p>
+                  <p className="text-xs text-[--text-secondary] font-medium line-clamp-1">{task.description}</p>
                 </div>
 
                 {/* Progress Circle / Indicator */}
                 <div className="flex items-center space-x-4">
                   <div className="text-right">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Readiness</span>
-                    <span className={`text-base font-extrabold block ${progress === 100 ? 'text-emerald-600' : progress >= 50 ? 'text-blue-600' : 'text-slate-500'}`}>
+                    <span className="text-[10px] font-bold text-[--text-muted] uppercase tracking-widest block">Readiness</span>
+                    <span className={`text-base font-extrabold block ${progress === 100 ? 'text-emerald-400' : progress >= 50 ? 'text-indigo-400' : 'text-[--text-secondary]'}`}>
                       {progress}%
                     </span>
                   </div>
 
                   {/* Icon toggle */}
-                  <div className="p-1.5 hover:bg-slate-50 text-slate-400 hover:text-slate-600 rounded-lg">
+                  <div className="p-1.5 hover:bg-white/5 text-[--text-muted] hover:text-white rounded-lg transition-colors">
                     {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
                   </div>
                 </div>
               </div>
 
               {/* Progress Line Bar */}
-              <div className="w-full bg-slate-100 h-1.5">
+              <div className="w-full bg-white/5 h-1">
                 <div 
                   className={`h-full transition-all duration-500 ${
                     progress === 100 
-                      ? 'bg-emerald-600' 
+                      ? 'bg-emerald-500' 
                       : progress >= 50 
-                        ? 'bg-blue-600' 
-                        : 'bg-slate-400'
+                        ? 'bg-indigo-500 shadow-glow-sm' 
+                        : 'bg-[--text-muted]'
                   }`}
                   style={{ width: `${progress}%` }}
                 />
@@ -152,18 +152,21 @@ export default function LifeTasks() {
 
               {/* Checklist Expand Area */}
               {isExpanded && (
-                <div className="bg-slate-50/50 p-5 border-t border-slate-100/50 space-y-3.5 animate-slide-down">
-                  <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Required Document Checklist</h4>
+                <div className="bg-white/5 p-5 border-t border-[--border] space-y-4 animate-fade-in">
+                  <div className="flex items-center space-x-2">
+                    <Sparkles className="h-4 w-4 text-indigo-400" />
+                    <h4 className="text-xs font-bold text-[--text-muted] uppercase tracking-widest">Required Document Checklist</h4>
+                  </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {task.documents.map((doc, idx) => (
                       <div 
                         key={idx}
-                        className="bg-white border border-slate-150 rounded-xl p-3.5 flex items-center justify-between shadow-xs"
+                        className="bg-white/5 border border-[--border]/40 hover:border-[--border] rounded-2xl p-4 flex items-center justify-between transition-colors duration-150"
                       >
-                        <span className="text-sm font-semibold text-slate-700">{doc.name}</span>
+                        <span className="text-sm font-bold text-white">{doc.name}</span>
                         <div className="flex items-center space-x-2">
-                          <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full border ${getStatusBadgeClass(doc.status)}`}>
+                          <span className={`px-2.5 py-1 text-[10px] font-bold rounded-full border ${getStatusBadgeClass(doc.status)}`}>
                             {doc.status}
                           </span>
                           {getDocStatusIcon(doc.status)}

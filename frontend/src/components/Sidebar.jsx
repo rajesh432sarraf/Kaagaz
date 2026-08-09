@@ -1,4 +1,5 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, Link } from 'react-router-dom'
+import logoImg from '../assets/logo.png'
 import { 
   LayoutDashboard, FileText, Upload, Sparkles,
   Bell, Settings, LogOut, ChevronRight
@@ -30,15 +31,9 @@ export default function Sidebar({ onClose }) {
       
       {/* Brand */}
       <div className="px-5 pt-6 pb-5 border-b border-[--border]">
-        <div className="flex items-center space-x-3">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-glow-sm flex-shrink-0">
-            <FileText className="h-4.5 w-4.5 text-white" />
-          </div>
-          <div>
-            <h2 className="text-base font-extrabold text-white tracking-tight">Kaagaz</h2>
-            <span className="text-[10px] font-semibold text-indigo-400 uppercase tracking-widest">Life Admin</span>
-          </div>
-        </div>
+        <Link to="/" className="flex items-center">
+          <img src={logoImg} alt="Kaagaz Logo" style={{ height: '36px', width: 'auto' }} className="object-contain" />
+        </Link>
       </div>
 
       {/* Navigation */}
@@ -52,8 +47,8 @@ export default function Sidebar({ onClose }) {
             className={({ isActive }) =>
               `group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? 'bg-indigo-500/15 text-white border border-indigo-500/20 shadow-glow-sm'
-                  : 'text-[--text-secondary] hover:text-white hover:bg-white/5'
+                  ? 'bg-indigo-500/15 text-[--text-primary] border border-indigo-500/20 shadow-glow-sm font-bold'
+                  : 'text-[--text-secondary] hover:text-[--text-primary] hover:bg-white/5'
               }`
             }
           >
@@ -77,8 +72,8 @@ export default function Sidebar({ onClose }) {
             className={({ isActive }) =>
               `group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? 'bg-indigo-500/15 text-white border border-indigo-500/20'
-                  : 'text-[--text-secondary] hover:text-white hover:bg-white/5'
+                  ? 'bg-indigo-500/15 text-[--text-primary] border border-indigo-500/20 font-bold'
+                  : 'text-[--text-secondary] hover:text-[--text-primary] hover:bg-white/5'
               }`
             }
           >
@@ -103,7 +98,7 @@ export default function Sidebar({ onClose }) {
             {initial}
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-xs font-semibold text-white truncate">{user?.name || 'User'}</p>
+            <p className="text-xs font-semibold text-[--text-primary] truncate">{user?.name || 'User'}</p>
             <p className="text-[10px] text-[--text-muted] truncate">{user?.email || ''}</p>
           </div>
         </div>

@@ -43,19 +43,20 @@ export default function Settings() {
         description="Configure account information, authentication controls and email reminders."
       />
 
-      <div className="bg-white border border-slate-100 rounded-3xl shadow-sm overflow-hidden flex flex-col md:flex-row min-h-[500px]">
+      <div className="glass rounded-3xl overflow-hidden flex flex-col md:flex-row min-h-[500px] border border-[--border] shadow-card">
         {/* Left Sidebar Tabs */}
-        <div className="w-full md:w-64 border-r border-slate-100 bg-slate-50/50 p-5 space-y-1.5 flex-shrink-0">
+        <div className="w-full md:w-64 border-r border-[--border] bg-white/5 p-5 space-y-1.5 flex-shrink-0">
+          <p className="px-3 text-[10px] font-bold text-[--text-muted] uppercase tracking-widest mb-3">Settings Panel</p>
           {tabs.map((tab) => {
             const Icon = tab.icon;
             return (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors ${
+                className={`w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-150 ${
                   activeTab === tab.id
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-slate-500 hover:bg-slate-100 hover:text-slate-800'
+                    ? 'bg-indigo-600 text-white shadow-glow-sm border border-indigo-500/20'
+                    : 'text-[--text-secondary] hover:bg-white/5 hover:text-white'
                 }`}
               >
                 <Icon className="h-4.5 w-4.5" />
@@ -66,10 +67,10 @@ export default function Settings() {
         </div>
 
         {/* Right Settings Pane */}
-        <div className="flex-1 p-6 md:p-8 space-y-6">
+        <div className="flex-1 p-6 md:p-8 space-y-6 relative z-10">
           {success && (
-            <div className="p-4 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-2xl text-xs font-semibold flex items-center space-x-2 animate-fade-in">
-              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+            <div className="p-4 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl text-xs font-semibold flex items-center space-x-2 animate-fade-in">
+              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
               <span>Settings saved successfully!</span>
             </div>
           )}
@@ -79,50 +80,50 @@ export default function Settings() {
             {/* PROFILE TAB */}
             {activeTab === 'profile' && (
               <div className="space-y-5">
-                <h3 className="font-bold text-slate-800 text-lg border-b border-slate-100 pb-2">Profile & Account Info</h3>
+                <h3 className="font-bold text-white text-lg border-b border-[--border] pb-2">Profile & Account Info</h3>
                 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Full Name</label>
+                  <label className="text-xs font-bold text-[--text-muted] uppercase tracking-widest block">Full Name</label>
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200/80 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
+                    className="w-full px-4 py-3 bg-[--bg-elevated] border border-[--border] hover:border-[--border-strong] focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 rounded-xl text-sm text-white placeholder-[--text-muted] outline-none transition-all"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Email Address</label>
+                  <label className="text-xs font-bold text-[--text-muted] uppercase tracking-widest block">Email Address</label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200/80 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
+                    className="w-full px-4 py-3 bg-[--bg-elevated] border border-[--border] hover:border-[--border-strong] focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 rounded-xl text-sm text-white placeholder-[--text-muted] outline-none transition-all"
                   />
                 </div>
 
-                <div className="pt-4 border-t border-slate-50 space-y-5">
-                  <h4 className="font-bold text-slate-800 text-sm">Change Password</h4>
+                <div className="pt-4 border-t border-[--border] space-y-5">
+                  <h4 className="font-bold text-white text-sm">Change Password</h4>
                   
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Current Password</label>
+                    <label className="text-xs font-bold text-[--text-muted] uppercase tracking-widest block">Current Password</label>
                     <input
                       type="password"
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200/80 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
+                      className="w-full px-4 py-3 bg-[--bg-elevated] border border-[--border] hover:border-[--border-strong] focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 rounded-xl text-sm text-white placeholder-[--text-muted] outline-none transition-all"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider block">New Password</label>
+                    <label className="text-xs font-bold text-[--text-muted] uppercase tracking-widest block">New Password</label>
                     <input
                       type="password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Min 6 characters"
-                      className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200/80 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium"
+                      className="w-full px-4 py-3 bg-[--bg-elevated] border border-[--border] hover:border-[--border-strong] focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 rounded-xl text-sm text-white placeholder-[--text-muted] outline-none transition-all"
                     />
                   </div>
                 </div>
@@ -132,40 +133,40 @@ export default function Settings() {
             {/* NOTIFICATIONS TAB */}
             {activeTab === 'notifications' && (
               <div className="space-y-5">
-                <h3 className="font-bold text-slate-800 text-lg border-b border-slate-100 pb-2">Email Reminders & Alerts</h3>
+                <h3 className="font-bold text-white text-lg border-b border-[--border] pb-2">Email Reminders & Alerts</h3>
                 
                 <div className="space-y-4 pt-2">
-                  <label className="flex items-center space-x-3 cursor-pointer">
+                  <label className="flex items-center space-x-3 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={emailAlerts}
                       onChange={(e) => setEmailAlerts(e.target.checked)}
-                      className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4.5 w-4.5"
+                      className="rounded border-[--border-strong] bg-[--bg-elevated] text-indigo-600 focus:ring-indigo-500/40 h-4.5 w-4.5 accent-indigo-500"
                     />
-                    <span className="text-sm font-semibold text-slate-700">Enable Email Expiry Notifications</span>
+                    <span className="text-sm font-semibold text-white">Enable Email Expiry Notifications</span>
                   </label>
 
-                  <div className="pl-7 space-y-3.5 border-l border-slate-100">
-                    <label className="flex items-center space-x-3 cursor-pointer">
+                  <div className="pl-7 space-y-3.5 border-l border-[--border]">
+                    <label className="flex items-center space-x-3 cursor-pointer select-none">
                       <input
                         type="checkbox"
                         disabled={!emailAlerts}
                         checked={expiry30}
                         onChange={(e) => setExpiry30(e.target.checked)}
-                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4 w-4 disabled:opacity-55"
+                        className="rounded border-[--border-strong] bg-[--bg-elevated] text-indigo-600 focus:ring-indigo-500/40 h-4 w-4 disabled:opacity-40 accent-indigo-500"
                       />
-                      <span className="text-xs font-medium text-slate-600">Send reminder 30 days before document expiration</span>
+                      <span className="text-xs font-medium text-[--text-secondary]">Send reminder 30 days before document expiration</span>
                     </label>
 
-                    <label className="flex items-center space-x-3 cursor-pointer">
+                    <label className="flex items-center space-x-3 cursor-pointer select-none">
                       <input
                         type="checkbox"
                         disabled={!emailAlerts}
                         checked={expiry7}
                         onChange={(e) => setExpiry7(e.target.checked)}
-                        className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4 w-4 disabled:opacity-55"
+                        className="rounded border-[--border-strong] bg-[--bg-elevated] text-indigo-600 focus:ring-indigo-500/40 h-4 w-4 disabled:opacity-40 accent-indigo-500"
                       />
-                      <span className="text-xs font-medium text-slate-600">Send urgent reminder 7 days before document expiration</span>
+                      <span className="text-xs font-medium text-[--text-secondary]">Send urgent reminder 7 days before document expiration</span>
                     </label>
                   </div>
                 </div>
@@ -175,19 +176,19 @@ export default function Settings() {
             {/* SECURITY TAB */}
             {activeTab === 'security' && (
               <div className="space-y-5">
-                <h3 className="font-bold text-slate-800 text-lg border-b border-slate-100 pb-2">Account Security</h3>
+                <h3 className="font-bold text-white text-lg border-b border-[--border] pb-2">Account Security</h3>
                 
                 <div className="space-y-4 pt-2">
-                  <label className="flex items-center space-x-3 cursor-pointer">
+                  <label className="flex items-start space-x-3 cursor-pointer select-none">
                     <input
                       type="checkbox"
                       checked={twoFactor}
                       onChange={(e) => setTwoFactor(e.target.checked)}
-                      className="rounded border-slate-300 text-blue-600 focus:ring-blue-500 h-4.5 w-4.5"
+                      className="rounded border-[--border-strong] bg-[--bg-elevated] text-indigo-600 focus:ring-indigo-500/40 h-4.5 w-4.5 mt-0.5 accent-indigo-500"
                     />
                     <div className="space-y-0.5">
-                      <span className="text-sm font-semibold text-slate-700 block">Enable Two-Factor Authentication (2FA)</span>
-                      <span className="text-xs text-slate-400 font-medium block">Secure logins with email or SMS verification codes</span>
+                      <span className="text-sm font-semibold text-white block">Enable Two-Factor Authentication (2FA)</span>
+                      <span className="text-xs text-[--text-muted] font-medium block">Secure logins with email or SMS verification codes</span>
                     </div>
                   </label>
                 </div>
@@ -195,10 +196,10 @@ export default function Settings() {
             )}
 
             {/* Save Buttons */}
-            <div className="pt-4 border-t border-slate-100 flex justify-end">
+            <div className="pt-4 border-t border-[--border] flex justify-end">
               <button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md shadow-blue-500/10 cursor-pointer"
+                className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-5 rounded-xl text-xs transition-all shadow-glow-sm hover:shadow-glow active:scale-[0.98] cursor-pointer"
               >
                 Save Settings
               </button>

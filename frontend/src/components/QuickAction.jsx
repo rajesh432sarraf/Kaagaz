@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 
 export default function QuickAction({ title, path, icon: Icon, variant = 'primary' }) {
   const variantStyles = {
-    primary: 'bg-blue-600 hover:bg-blue-700 text-white shadow-sm shadow-blue-500/10 hover:shadow-blue-500/20 active:translate-y-[1px]',
-    outline: 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 active:translate-y-[1px]',
-    ghost: 'bg-blue-50 hover:bg-blue-100/80 text-blue-600 border border-blue-100/50'
+    primary: 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-glow-sm hover:shadow-glow active:scale-[0.98]',
+    outline: 'glass hover:bg-white/5 text-[--text-secondary] hover:text-white border border-[--border-strong] active:scale-[0.98]',
+    ghost: 'bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/15'
   };
 
   const style = variantStyles[variant] || variantStyles.primary;

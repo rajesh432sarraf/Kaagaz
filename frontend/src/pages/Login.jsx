@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { FileText, Mail, Lock, AlertCircle, ArrowRight, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import logoImg from '../assets/logo.png'
 
 export default function Login() {
   const navigate = useNavigate();
@@ -38,8 +39,8 @@ export default function Login() {
 
           {/* Header */}
           <div className="text-center mb-8">
-            <Link to="/" className="inline-flex p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 mb-5 hover:bg-indigo-500/20 transition-colors">
-              <FileText className="h-6 w-6 text-indigo-400" />
+            <Link to="/" className="inline-block mb-6">
+              <img src={logoImg} alt="Kaagaz Logo" style={{ height: '40px', width: 'auto' }} className="mx-auto object-contain" />
             </Link>
             <h1 className="text-2xl font-extrabold text-white tracking-tight">Welcome back</h1>
             <p className="text-[--text-secondary] text-sm mt-1.5">Sign in to access your documents</p>

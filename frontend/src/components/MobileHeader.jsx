@@ -1,4 +1,5 @@
-import { Menu, FileText } from 'lucide-react'
+import logoImg from '../assets/logo.png'
+import { Menu } from 'lucide-react'
 
 export default function MobileHeader({ onMenuToggle }) {
   return (
@@ -12,10 +13,7 @@ export default function MobileHeader({ onMenuToggle }) {
           <Menu className="h-6 w-6" />
         </button>
         <div className="flex items-center space-x-2">
-          <div className="p-1.5 bg-blue-600 rounded-lg text-white">
-            <FileText className="h-5 w-5" />
-          </div>
-          <span className="font-extrabold text-slate-800 text-lg tracking-tight">Kaagaz</span>
+          <img src={logoImg} alt="Kaagaz Logo" style={{ height: '30px', width: 'auto' }} className="object-contain" />
         </div>
       </div>
     </header>
