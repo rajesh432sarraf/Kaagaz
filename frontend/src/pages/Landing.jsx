@@ -86,10 +86,7 @@ export default function Landing() {
         
         {/* Hero Left: Text & CTA */}
         <div className="lg:col-span-6 space-y-6 text-left relative z-10">
-          <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-semibold">
-            <Sparkles className="h-3.5 w-3.5 text-amber-400" />
-            <span>Smart Personal Document Administration</span>
-          </div>
+
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
             Stop digging folders.<br />
