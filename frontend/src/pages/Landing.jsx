@@ -128,7 +128,6 @@ export default function Landing() {
         {/* Hero Right: Live Interactive App Preview */}
         <div className="lg:col-span-6 relative z-10">
           <div className="glass rounded-3xl p-6 shadow-card border border-[--border] relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/5 via-transparent to-amber-500/5 pointer-events-none" />
             
             {/* Header info */}
             <div className="flex items-center justify-between pb-4 border-b border-[--border] mb-5">
@@ -216,7 +215,6 @@ export default function Landing() {
       {/* Interactive Milestone Readiness Calculator */}
       <section className="max-w-7xl mx-auto px-6 py-20 relative z-10 border-t border-[--border]/40">
         <div className="glass rounded-4xl p-8 sm:p-12 border border-[--border] shadow-card relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-amber-500/5 pointer-events-none" />
           
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Checklist text on Left */}
