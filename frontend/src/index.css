@@ -330,7 +330,9 @@
   }
 
   /* Handle gradient text clip legibility on warm background */
-  .amoled-ui .bg-clip-text {
+  .amoled-ui .bg-clip-text,
+  .amoled-ui .gradient-text,
+  .amoled-ui .gradient-text-indigo {
     background: none !important;
     -webkit-background-clip: unset !important;
     -webkit-text-fill-color: var(--text-primary) !important;

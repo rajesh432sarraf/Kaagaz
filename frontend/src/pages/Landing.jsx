@@ -80,7 +80,7 @@ export default function Landing() {
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] text-white">
             Stop digging folders.<br />
-            Manage with <span className="gradient-text">Kaagaz</span>.
+            Manage with Kaagaz.
           </h1>
 
           <p className="text-base sm:text-lg text-[--text-secondary] font-medium leading-relaxed max-w-xl">
