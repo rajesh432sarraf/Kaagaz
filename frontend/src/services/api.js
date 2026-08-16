@@ -124,3 +124,11 @@ export async function updateAvatar(formData) {
   });
   return handleResponse(res);
 }
+
+export async function removeAvatar() {
+  const res = await fetch(`${API_BASE_URL}/auth/avatar`, {
+    method: 'DELETE',
+    headers: { ...authHeaders() },
+  });
+  return handleResponse(res);
+}

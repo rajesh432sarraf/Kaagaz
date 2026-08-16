@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { User, Bell, Shield, CheckCircle2 } from 'lucide-react'
+import { User, Bell, Shield, CheckCircle2, Camera } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import { useAuth } from '../context/AuthContext'
-import { API_ORIGIN, updateAvatar } from '../services/api'
+import { API_ORIGIN, updateAvatar, removeAvatar } from '../services/api'
 
 export default function Settings() {
   const { user, updateUser } = useAuth();
@@ -49,6 +49,17 @@ export default function Settings() {
       setTimeout(() => setSuccess(false), 1500);
     } catch (err) {
       setAvatarError(err.message || 'Failed to upload image.');
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    try {
+      const data = await removeAvatar();
+      updateUser(data.user);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 1500);
+    } catch (err) {
+      setAvatarError(err.message || 'Failed to remove image.');
     }
   };
 
@@ -116,19 +127,36 @@ export default function Settings() {
                   <div className="text-rose-400 text-xs font-semibold">{avatarError}</div>
                 )}
 
-                <div className="flex items-center space-x-4 pb-4 border-b border-[--border]">
-                  <div className="relative h-14 w-14 rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-500/20 flex items-center justify-center text-sm font-bold text-indigo-300">
+                <div className="flex items-center space-x-6 pb-6 border-b border-[--border]">
+                  <div className="relative group h-20 w-20 rounded-full overflow-hidden bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border-2 border-[--border-strong] flex items-center justify-center text-xl font-bold text-indigo-300 shadow-card">
                     {user?.avatarUrl ? (
                       <img src={`${API_ORIGIN}${user.avatarUrl}`} alt="Avatar" className="h-full w-full object-cover" />
                     ) : (
                       user?.name?.[0]?.toUpperCase() || 'U'
                     )}
-                  </div>
-                  <div className="space-y-1">
-                    <label className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1.5 px-3 rounded-lg text-xs cursor-pointer inline-block transition-colors">
-                      Upload Photo
+                    {/* Hover overlay to upload */}
+                    <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 text-white text-[9px] font-bold">
+                      <Camera className="h-4.5 w-4.5 mb-1 text-white" />
+                      <span>EDIT PHOTO</span>
                       <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
                     </label>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <label className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-xl text-xs cursor-pointer transition-colors shadow-glow-sm hover:shadow-glow active:scale-[0.98]">
+                        Upload New Photo
+                        <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+                      </label>
+                      {user?.avatarUrl && (
+                        <button
+                          type="button"
+                          onClick={handleRemoveAvatar}
+                          className="bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-bold py-2 px-4 rounded-xl text-xs border border-rose-500/20 transition-all active:scale-[0.98]"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
                     <p className="text-[10px] text-[--text-muted]">JPG, PNG or JPEG. Max 2MB.</p>
                   </div>
                 </div>
