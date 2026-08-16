@@ -5,13 +5,14 @@ import MobileHeader from './MobileHeader'
 
 export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
     <div className="min-h-screen document-bg amoled-ui flex text-[--text-primary]">
 
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex md:flex-col md:w-64 md:flex-shrink-0 md:h-screen md:sticky md:top-0">
-        <Sidebar />
+      <div className={`hidden md:flex md:flex-col md:flex-shrink-0 md:h-screen md:sticky md:top-0 transition-all duration-300 ${sidebarCollapsed ? 'md:w-20' : 'md:w-64'}`}>
+        <Sidebar isCollapsed={sidebarCollapsed} onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)} />
       </div>
 
       {/* Mobile Sidebar Overlay */}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { User, Bell, Shield, CheckCircle2, Camera } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import { useAuth } from '../context/AuthContext'
@@ -24,7 +24,9 @@ export default function Settings() {
   // Security states
   const [twoFactor, setTwoFactor] = useState(false);
 
-  const handleAvatarChange = async (e) => {
+  const [cropImageSrc, setCropImageSrc] = useState(null);
+
+  const handleAvatarChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
@@ -39,8 +41,17 @@ export default function Settings() {
     }
 
     setAvatarError('');
+    const reader = new FileReader();
+    reader.onload = () => {
+      setCropImageSrc(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleCropSave = async (blob) => {
+    setCropImageSrc(null);
     const formData = new FormData();
-    formData.append('avatar', file);
+    formData.append('avatar', blob, 'avatar.jpg');
 
     try {
       const data = await updateAvatar(formData);
@@ -287,6 +298,145 @@ export default function Settings() {
           </form>
         </div>
       </div>
+      {cropImageSrc && (
+        <AvatarCropModal
+          src={cropImageSrc}
+          onClose={() => setCropImageSrc(null)}
+          onSave={handleCropSave}
+        />
+      )}
     </div>
   )
+}
+
+function AvatarCropModal({ src, onClose, onSave }) {
+  const [zoom, setZoom] = useState(1);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const containerRef = useRef(null);
+
+  const handlePointerDown = (e) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - offset.x, y: e.clientY - offset.y });
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDragging) return;
+    setOffset({
+      x: e.clientX - dragStart.x,
+      y: e.clientY - dragStart.y
+    });
+  };
+
+  const handlePointerUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleConfirm = () => {
+    const img = new Image();
+    img.src = src;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = 300;
+      canvas.height = 300;
+      const ctx = canvas.getContext('2d');
+
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.scale(zoom, zoom);
+
+      const aspect = img.width / img.height;
+      let drawW, drawH;
+      if (aspect >= 1) {
+        drawH = 200;
+        drawW = 200 * aspect;
+      } else {
+        drawW = 200;
+        drawH = 200 / aspect;
+      }
+
+      ctx.translate(offset.x / zoom, offset.y / zoom);
+      ctx.drawImage(img, -drawW / 2, -drawH / 2, drawW, drawH);
+      ctx.restore();
+
+      canvas.toBlob((blob) => {
+        if (blob) {
+          onSave(blob);
+        }
+      }, 'image/jpeg', 0.9);
+    };
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 backdrop-blur-md p-4">
+      <div className="bg-[--bg-surface] border border-[--border] rounded-3xl p-6 max-w-md w-full shadow-card space-y-6 animate-scale-up">
+        <div className="space-y-1 text-center">
+          <h3 className="text-lg font-bold text-white">Adjust Profile Photo</h3>
+          <p className="text-xs text-[--text-muted]">Drag to position, use slider to zoom</p>
+        </div>
+
+        <div 
+          ref={containerRef}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerLeave={handlePointerUp}
+          className="relative h-64 w-full rounded-2xl border border-[--border] bg-neutral-900/50 flex items-center justify-center overflow-hidden cursor-move select-none touch-none"
+        >
+          <div className="absolute h-48 w-48 rounded-full border-2 border-dashed border-indigo-400/80 z-20 pointer-events-none shadow-[0_0_0_9999px_rgba(0,0,0,0.5)]"></div>
+          
+          <img
+            src={src}
+            alt="Adjustable Preview"
+            style={{
+              transform: `translate(${offset.x}px, ${offset.y}px) scale(${zoom})`,
+              transition: isDragging ? 'none' : 'transform 0.15s ease-out',
+              maxHeight: '70%',
+              maxWidth: '70%',
+              objectFit: 'contain'
+            }}
+            className="pointer-events-none"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex justify-between items-center text-xs font-bold text-[--text-secondary]">
+            <span>Zoom</span>
+            <span>{Math.round(zoom * 100)}%</span>
+          </div>
+          <input
+            type="range"
+            min="1"
+            max="3"
+            step="0.01"
+            value={zoom}
+            onChange={(e) => setZoom(parseFloat(e.target.value))}
+            className="w-full h-1.5 bg-[--bg-elevated] rounded-lg appearance-none cursor-pointer accent-indigo-500"
+          />
+        </div>
+
+        <div className="flex space-x-3">
+          <button
+            type="button"
+            onClick={onClose}
+            className="flex-1 py-2.5 rounded-xl border border-[--border] text-xs font-bold text-[--text-secondary] hover:text-[--text-primary] hover:bg-white/5 transition-all"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={handleConfirm}
+            className="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-glow-sm hover:shadow-glow active:scale-[0.98] transition-all"
+          >
+            Set Photo
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
