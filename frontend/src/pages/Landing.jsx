@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import logoImg from '../assets/logo.png'
 import { 
@@ -26,6 +26,19 @@ export default function Landing() {
     insurance: false,
     passport: false,
   });
+
+  // Auto-cycle demo documents every 3.5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSelectedDemoDocId((currentId) => {
+        const currentIndex = demoDocs.findIndex((d) => d.id === currentId);
+        const nextIndex = (currentIndex + 1) % demoDocs.length;
+        return demoDocs[nextIndex].id;
+      });
+    }, 3500);
+
+    return () => clearInterval(timer);
+  }, [selectedDemoDocId]);
 
   const activeDemoDoc = demoDocs.find(d => d.id === selectedDemoDocId) || demoDocs[0];
 
