@@ -5,6 +5,7 @@ import {
   Bell, Settings, LogOut, ChevronRight
 } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { API_ORIGIN } from '../services/api'
 
 const menuItems = [
   { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
@@ -94,8 +95,12 @@ export default function Sidebar({ onClose }) {
       <div className="p-3 border-t border-[--border]">
         {/* User tile */}
         <div className="flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-[--bg-elevated] border border-[--border] mb-1">
-          <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-500/20 flex items-center justify-center text-xs font-bold text-indigo-300 flex-shrink-0">
-            {initial}
+          <div className="h-8 w-8 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-500/20 flex items-center justify-center text-xs font-bold text-indigo-300 flex-shrink-0">
+            {user?.avatarUrl ? (
+              <img src={`${API_ORIGIN}${user.avatarUrl}`} alt="Avatar" className="h-full w-full object-cover" />
+            ) : (
+              initial
+            )}
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-xs font-semibold text-[--text-primary] truncate">{user?.name || 'User'}</p>

@@ -2,11 +2,13 @@ import { useState } from 'react'
 import { User, Bell, Shield, CheckCircle2 } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import { useAuth } from '../context/AuthContext'
+import { API_ORIGIN, updateAvatar } from '../services/api'
 
 export default function Settings() {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const [activeTab, setActiveTab] = useState('profile');
   const [success, setSuccess] = useState(false);
+  const [avatarError, setAvatarError] = useState('');
 
   // Form values pre-filled from real user
   const [name, setName] = useState(user?.name || '');
@@ -21,6 +23,34 @@ export default function Settings() {
 
   // Security states
   const [twoFactor, setTwoFactor] = useState(false);
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)) {
+      setAvatarError('Only JPG, JPEG, and PNG images are allowed.');
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      setAvatarError('Profile picture must be less than 2 MB.');
+      return;
+    }
+
+    setAvatarError('');
+    const formData = new FormData();
+    formData.append('avatar', file);
+
+    try {
+      const data = await updateAvatar(formData);
+      updateUser(data.user);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 1500);
+    } catch (err) {
+      setAvatarError(err.message || 'Failed to upload image.');
+    }
+  };
 
   const handleSave = (e) => {
     e.preventDefault();
@@ -82,6 +112,27 @@ export default function Settings() {
               <div className="space-y-5">
                 <h3 className="font-bold text-white text-lg border-b border-[--border] pb-2">Profile & Account Info</h3>
                 
+                {avatarError && (
+                  <div className="text-rose-400 text-xs font-semibold">{avatarError}</div>
+                )}
+
+                <div className="flex items-center space-x-4 pb-4 border-b border-[--border]">
+                  <div className="relative h-14 w-14 rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-500/20 flex items-center justify-center text-sm font-bold text-indigo-300">
+                    {user?.avatarUrl ? (
+                      <img src={`${API_ORIGIN}${user.avatarUrl}`} alt="Avatar" className="h-full w-full object-cover" />
+                    ) : (
+                      user?.name?.[0]?.toUpperCase() || 'U'
+                    )}
+                  </div>
+                  <div className="space-y-1">
+                    <label className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-1.5 px-3 rounded-lg text-xs cursor-pointer inline-block transition-colors">
+                      Upload Photo
+                      <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+                    </label>
+                    <p className="text-[10px] text-[--text-muted]">JPG, PNG or JPEG. Max 2MB.</p>
+                  </div>
+                </div>
+
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-[--text-muted] uppercase tracking-widest block">Full Name</label>
                   <input

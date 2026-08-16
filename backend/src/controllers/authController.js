@@ -29,7 +29,7 @@ exports.register = async (req, res) => {
       success: true,
       message: 'Account created successfully.',
       token,
-      user: { id: user._id, name: user.name, email: user.email },
+      user: { id: user._id, name: user.name, email: user.email, avatarUrl: user.avatarUrl },
     });
   } catch (error) {
     if (error.code === 11000) {
@@ -64,7 +64,7 @@ exports.login = async (req, res) => {
       success: true,
       message: 'Login successful.',
       token,
-      user: { id: user._id, name: user.name, email: user.email },
+      user: { id: user._id, name: user.name, email: user.email, avatarUrl: user.avatarUrl },
     });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error. Please try again.' });
@@ -78,8 +78,39 @@ exports.getMe = async (req, res) => {
     if (!user) {
       return res.status(404).json({ success: false, message: 'User not found.' });
     }
-    res.status(200).json({ success: true, user: { id: user._id, name: user.name, email: user.email } });
+    res.status(200).json({ success: true, user: { id: user._id, name: user.name, email: user.email, avatarUrl: user.avatarUrl } });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Server error.' });
+  }
+};
+
+// @desc   Upload profile avatar
+exports.uploadAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'Please upload an image file.' });
+    }
+
+    if (req.file.mimetype === 'application/pdf') {
+      return res.status(400).json({ success: false, message: 'Only image files (JPG, JPEG, PNG) are allowed.' });
+    }
+
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    // Save avatar relative path
+    const fileUrl = `/uploads/${req.file.filename}`;
+    user.avatarUrl = fileUrl;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile picture updated successfully.',
+      user: { id: user._id, name: user.name, email: user.email, avatarUrl: user.avatarUrl },
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error. Please try again.' });
   }
 };

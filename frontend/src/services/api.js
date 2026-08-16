@@ -115,3 +115,12 @@ export async function getDocumentStats() {
   });
   return handleResponse(res);
 }
+
+export async function updateAvatar(formData) {
+  const res = await fetch(`${API_BASE_URL}/auth/avatar`, {
+    method: 'PUT',
+    headers: { ...authHeaders() }, // No Content-Type header so browser sets boundaries
+    body: formData,
+  });
+  return handleResponse(res);
+}

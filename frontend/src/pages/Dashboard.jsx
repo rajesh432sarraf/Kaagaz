@@ -18,6 +18,7 @@ import StatusBadge from '../components/StatusBadge'
 import QuickAction from '../components/QuickAction'
 import SectionHeader from '../components/SectionHeader'
 import DocumentDetailModal from '../components/DocumentDetailModal'
+import { API_ORIGIN } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import { getDocumentStats, getDocuments } from '../services/api'
 
@@ -77,8 +78,12 @@ export default function Dashboard() {
 
         {/* Avatar */}
         <div className="flex items-center space-x-3">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-500/20 flex items-center justify-center text-sm font-bold text-indigo-300 shadow-glow-sm">
-            {user?.name?.[0]?.toUpperCase() || 'U'}
+          <div className="h-10 w-10 rounded-xl overflow-hidden bg-gradient-to-br from-indigo-500/30 to-violet-500/30 border border-indigo-500/20 flex items-center justify-center text-sm font-bold text-indigo-300 shadow-glow-sm">
+            {user?.avatarUrl ? (
+              <img src={`${API_ORIGIN}${user.avatarUrl}`} alt="Avatar" className="h-full w-full object-cover" />
+            ) : (
+              user?.name?.[0]?.toUpperCase() || 'U'
+            )}
           </div>
         </div>
       </div>
