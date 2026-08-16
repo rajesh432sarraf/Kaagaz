@@ -117,7 +117,6 @@ export default function Dashboard() {
 
       {/* 3. Quick Actions */}
       <div className="glass rounded-3xl p-6 shadow-card space-y-4 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/5 via-transparent to-amber-500/5 pointer-events-none" />
         <h2 className="text-xs font-bold uppercase tracking-widest text-[--text-muted]">Quick Actions</h2>
         <div className="flex items-center gap-3 flex-wrap relative z-10">
           <QuickAction title="Upload Document" path="/upload" icon={Plus} variant="primary" />

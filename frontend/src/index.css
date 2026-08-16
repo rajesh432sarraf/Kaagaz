@@ -338,4 +338,9 @@
     -webkit-text-fill-color: var(--text-primary) !important;
     color: var(--text-primary) !important;
   }
+
+  /* Override hover:text-white to maintain contrast on ivory background */
+  .amoled-ui .hover\:text-white:hover {
+    color: var(--text-primary) !important;
+  }
 }
