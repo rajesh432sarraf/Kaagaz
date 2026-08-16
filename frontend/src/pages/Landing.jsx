@@ -71,10 +71,6 @@ export default function Landing() {
       {/* Hero Section: Two-Column Layout */}
       <section className="relative max-w-7xl mx-auto px-6 pt-16 lg:pt-24 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         
-        {/* Glow orbs */}
-        <div className="absolute top-10 left-1/4 w-[500px] h-[300px] bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-40 right-1/4 w-[300px] h-[250px] bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
-
         {/* Hero Left: Text & CTA */}
         <div className="lg:col-span-6 space-y-6 text-left relative z-10">
           <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-semibold">

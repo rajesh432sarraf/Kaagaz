@@ -36,7 +36,7 @@ export default function Register() {
 
   return (
     <div className="min-h-screen document-bg amoled-ui flex items-center justify-center p-6">
-      <div className="fixed top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[300px] bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+
 
       <div className="relative w-full max-w-md animate-fade-in-scale">
         <div className="glass rounded-4xl p-8 sm:p-10 shadow-card">
