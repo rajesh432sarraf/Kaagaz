@@ -163,51 +163,53 @@ export default function Landing() {
             </div>
 
             {/* Interactive Preview Display */}
-            <div className="glass-elevated rounded-2xl p-5 border border-[--border-strong] space-y-4 shadow-card">
-              <div className="flex items-start justify-between">
-                <div className={`p-2.5 rounded-xl border bg-gradient-to-br ${activeDemoDoc.color.split(' ').slice(1).join(' ')}`}>
-                  <FileText className="h-5 w-5 text-indigo-400" />
+            <div className="glass-elevated rounded-2xl p-5 border border-[--border-strong] shadow-card overflow-hidden">
+              <div key={selectedDemoDocId} className="space-y-4 animate-slide-in-right">
+                <div className="flex items-start justify-between">
+                  <div className={`p-2.5 rounded-xl border bg-gradient-to-br ${activeDemoDoc.color.split(' ').slice(1).join(' ')}`}>
+                    <FileText className="h-5 w-5 text-indigo-400" />
+                  </div>
+                  <div className="text-right">
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-[--text-muted] block">Status</span>
+                    <span className={`inline-block text-[10px] font-bold mt-1 px-2.5 py-0.5 rounded-full border ${
+                      activeDemoDoc.status === 'Valid' 
+                        ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' 
+                        : activeDemoDoc.status === 'Expiring Soon'
+                          ? 'text-amber-400 bg-amber-500/10 border-amber-500/20'
+                          : 'text-rose-400 bg-rose-500/10 border-rose-500/20 animate-pulse'
+                    }`}>
+                      {activeDemoDoc.status}
+                    </span>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <span className="text-[9px] font-bold uppercase tracking-widest text-[--text-muted] block">Status</span>
-                  <span className={`inline-block text-[10px] font-bold mt-1 px-2.5 py-0.5 rounded-full border ${
-                    activeDemoDoc.status === 'Valid' 
-                      ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' 
-                      : activeDemoDoc.status === 'Expiring Soon'
-                        ? 'text-amber-400 bg-amber-500/10 border-amber-500/20'
-                        : 'text-rose-400 bg-rose-500/10 border-rose-500/20 animate-pulse'
-                  }`}>
-                    {activeDemoDoc.status}
-                  </span>
-                </div>
-              </div>
 
-              <div>
-                <h4 className="font-extrabold text-white text-base leading-snug">{activeDemoDoc.name}</h4>
-                <p className="text-[10px] font-bold text-[--text-muted] uppercase tracking-wider mt-0.5">{activeDemoDoc.category}</p>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3 text-xs border-t border-[--border] pt-3">
                 <div>
-                  <span className="text-[--text-muted] font-bold block uppercase tracking-wider text-[9px] mb-0.5">Issued</span>
-                  <span className="text-[--text-secondary] font-semibold">{activeDemoDoc.issueDate}</span>
+                  <h4 className="font-extrabold text-white text-base leading-snug">{activeDemoDoc.name}</h4>
+                  <p className="text-[10px] font-bold text-[--text-muted] uppercase tracking-wider mt-0.5">{activeDemoDoc.category}</p>
                 </div>
-                <div>
-                  <span className="text-[--text-muted] font-bold block uppercase tracking-wider text-[9px] mb-0.5">Expiry / Alert</span>
-                  <span className={`font-semibold ${activeDemoDoc.status === 'Critical' ? 'text-rose-400' : 'text-[--text-secondary]'}`}>
-                    {getUrgencyText(activeDemoDoc.status)}
-                  </span>
-                </div>
-              </div>
 
-              <div className="flex items-center gap-2 border-t border-[--border] pt-3">
-                <button
-                  onClick={() => setShowDemoModal(true)}
-                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/15 rounded-xl transition-all cursor-pointer"
-                >
-                  <Eye className="h-3.5 w-3.5" />
-                  <span>Inspect Metadata</span>
-                </button>
+                <div className="grid grid-cols-2 gap-3 text-xs border-t border-[--border] pt-3">
+                  <div>
+                    <span className="text-[--text-muted] font-bold block uppercase tracking-wider text-[9px] mb-0.5">Issued</span>
+                    <span className="text-[--text-secondary] font-semibold">{activeDemoDoc.issueDate}</span>
+                  </div>
+                  <div>
+                    <span className="text-[--text-muted] font-bold block uppercase tracking-wider text-[9px] mb-0.5">Expiry / Alert</span>
+                    <span className={`font-semibold ${activeDemoDoc.status === 'Critical' ? 'text-rose-400' : 'text-[--text-secondary]'}`}>
+                      {getUrgencyText(activeDemoDoc.status)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 border-t border-[--border] pt-3">
+                  <button
+                    onClick={() => setShowDemoModal(true)}
+                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-bold text-indigo-400 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/15 rounded-xl transition-all cursor-pointer"
+                  >
+                    <Eye className="h-3.5 w-3.5" />
+                    <span>Inspect Metadata</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
